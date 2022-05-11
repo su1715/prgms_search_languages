@@ -1,9 +1,15 @@
 import SearchInput from "./SearchInput.js";
 import Suggestion from "./Suggestion.js";
 import request from "../util/api.js";
+import SelectedLanguage from "./SelectedLanguage.js";
 
 export default function App($app) {
-  this.state = { inputValue: "", searchResult: [] };
+  this.state = { inputValue: "", searchResult: [], selectedLanguages: [] };
+
+  const selectedLanguage = new SelectedLanguage({
+    $app,
+    initialState: this.state.selectedLanguages
+  });
 
   const searchInput = new SearchInput({
     $app,
@@ -27,6 +33,7 @@ export default function App($app) {
     this.state = nextState;
     searchInput.setState(this.state.inputValue);
     suggestion.setState(this.state.searchResult);
+    selectedLanguage.setState(this.state.selectedLanguages);
   };
 
   this.init = () => {};
