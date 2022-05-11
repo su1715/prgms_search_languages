@@ -1,4 +1,4 @@
-export default function SInput({ $app, initialState, onChange }) {
+export default function SearchInput({ $app, initialState, onChange }) {
   this.state = initialState;
   this.$target = document.createElement("form");
   this.$target.class = "SearchInput";
