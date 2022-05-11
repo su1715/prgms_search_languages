@@ -1,4 +1,5 @@
 import SearchInput from "./SearchInput.js";
+import Suggestion from "./Suggestion.js";
 import request from "../util/api.js";
 
 export default function App($app) {
@@ -17,9 +18,15 @@ export default function App($app) {
     }
   });
 
+  const suggestion = new Suggestion({
+    $app,
+    initialState: this.state.searchResult
+  });
+
   this.setState = nextState => {
     this.state = nextState;
     searchInput.setState(this.state.inputValue);
+    suggestion.setState(this.state.searchResult);
   };
 
   this.init = () => {};
