@@ -19,6 +19,8 @@ export default function SearchInput({ $app, initialState, onChange }) {
   this.render();
 
   this.$target.addEventListener("keyup", e => {
+    const arrows = new Set(["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"]);
+    if (arrows.has(e.key)) return;
     onChange(e.target.value);
   });
 }

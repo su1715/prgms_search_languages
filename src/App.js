@@ -4,7 +4,12 @@ import request from "../util/api.js";
 import SelectedLanguage from "./SelectedLanguage.js";
 
 export default function App($app) {
-  this.state = { inputValue: "", searchResult: [], selectedLanguages: [] };
+  this.state = {
+    inputValue: "",
+    searchResult: [],
+    selectedLanguages: [],
+    candidateIndex: 0
+  };
 
   const selectedLanguage = new SelectedLanguage({
     $app,
@@ -26,13 +31,35 @@ export default function App($app) {
 
   const suggestion = new Suggestion({
     $app,
-    initialState: this.state.searchResult
+    initialState: {
+      searchResult: this.state.searchResult,
+      candidateIndex: this.state.candidateIndex
+    },
+    onArrowKey: key => {
+      const {
+        searchResult: { length: len },
+        candidateIndex
+      } = this.state;
+      let newIndex = candidateIndex;
+      if (key === "ArrowUp") {
+        newIndex = (candidateIndex + len - 1) % len;
+      } else if (key === "ArrowDown") {
+        newIndex = (candidateIndex + 1) % len;
+      }
+      this.setState({
+        ...this.state,
+        candidateIndex: newIndex
+      });
+    }
   });
 
   this.setState = nextState => {
     this.state = nextState;
     searchInput.setState(this.state.inputValue);
-    suggestion.setState(this.state.searchResult);
+    suggestion.setState({
+      searchResult: this.state.searchResult,
+      candidateIndex: this.state.candidateIndex
+    });
     selectedLanguage.setState(this.state.selectedLanguages);
   };
 
