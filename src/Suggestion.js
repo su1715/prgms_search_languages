@@ -2,7 +2,8 @@ export default function Suggestion({
   $app,
   initialState,
   onArrowKey,
-  onItemMatch
+  onItemMatch,
+  onClick
 }) {
   this.state = initialState;
   this.$target = document.createElement("div");
@@ -22,7 +23,9 @@ export default function Suggestion({
 	 	${searchResult
       .map(
         (item, i) =>
-          `<li class=${
+          `<li 
+          data-id=${i}
+          class=${
             i === candidateIndex ? "Suggestion__item--selected" : ""
           }>${onItemMatch(item)}</li>`
       )
@@ -36,6 +39,14 @@ export default function Suggestion({
     if (arrows.has(e.key)) {
       onArrowKey(e.key);
     }
+  });
+
+  this.$target.addEventListener("click", ({ target }) => {
+    const li = target.closest("LI");
+    if (!li) return;
+
+    const { id } = li.dataset;
+    onClick(id);
   });
 
   this.render();

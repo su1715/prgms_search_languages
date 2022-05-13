@@ -14,6 +14,21 @@ export default function App($app) {
     candidateIndex: 0
   };
 
+  const onSelectLanguage = index => {
+    const { searchResult, selectedLanguages } = this.state;
+    if (searchResult.length === 0) return;
+    const newLanguage = searchResult[index];
+
+    alert(newLanguage);
+    const filteredLanguages = selectedLanguages.filter(
+      lang => lang !== newLanguage
+    );
+    const addedLanguages = [...filteredLanguages, newLanguage];
+    const newSelectedLanguages = addedLanguages.slice(-5);
+
+    this.setState({ ...this.state, selectedLanguages: newSelectedLanguages });
+  };
+
   const selectedLanguage = new SelectedLanguage({
     $app,
     initialState: this.state.selectedLanguages
@@ -35,18 +50,8 @@ export default function App($app) {
       });
     },
     onEnterKey: () => {
-      const { searchResult, candidateIndex, selectedLanguages } = this.state;
-      if (searchResult.length === 0) return;
-      const newLanguage = searchResult[candidateIndex];
-
-      alert(newLanguage);
-      const filteredLanguages = selectedLanguages.filter(
-        lang => lang !== newLanguage
-      );
-      const addedLanguages = [...filteredLanguages, newLanguage];
-      const newSelectedLanguages = addedLanguages.slice(-5);
-
-      this.setState({ ...this.state, selectedLanguages: newSelectedLanguages });
+      const { candidateIndex } = this.state;
+      onSelectLanguage(candidateIndex);
     }
   });
 
@@ -83,6 +88,9 @@ export default function App($app) {
         `</span>` +
         item.substring(endIndex)
       );
+    },
+    onClick: index => {
+      onSelectLanguage(index);
     }
   });
 
