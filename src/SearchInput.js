@@ -1,4 +1,9 @@
-export default function SearchInput({ $app, initialState, onChange }) {
+export default function SearchInput({
+  $app,
+  initialState,
+  onChange,
+  onEnterKey
+}) {
   this.state = initialState;
   this.$target = document.createElement("form");
   this.$target.class = "SearchInput";
@@ -18,7 +23,13 @@ export default function SearchInput({ $app, initialState, onChange }) {
 
   this.render();
 
+  this.$target.addEventListener("submit", e => {
+    e.preventDefault();
+    onEnterKey();
+  });
+
   this.$target.addEventListener("keyup", e => {
+    e.preventDefault();
     const arrows = new Set(["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"]);
     if (arrows.has(e.key)) return;
     onChange(e.target.value);

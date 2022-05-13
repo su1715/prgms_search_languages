@@ -26,6 +26,11 @@ export default function App($app) {
         console.log(result);
       }
       this.setState({ ...this.state, inputValue: value, searchResult: result });
+    },
+    onEnterKey: () => {
+      const { searchResult, candidateIndex } = this.state;
+      console.log(searchResult, candidateIndex);
+      alert(searchResult[candidateIndex]);
     }
   });
 
