@@ -1,4 +1,9 @@
-export default function Suggestion({ $app, initialState, onArrowKey }) {
+export default function Suggestion({
+  $app,
+  initialState,
+  onArrowKey,
+  onItemMatch
+}) {
   this.state = initialState;
   this.$target = document.createElement("div");
   this.$target.className = "Suggestion";
@@ -19,14 +24,11 @@ export default function Suggestion({ $app, initialState, onArrowKey }) {
         (item, i) =>
           `<li class=${
             i === candidateIndex ? "Suggestion__item--selected" : ""
-          }>${item}</li>`
+          }>${onItemMatch(item)}</li>`
       )
       .join("")} 
 	  </ul>`;
   };
-
-  // searchResult 요소가 있는 경우에만
-  // 키 입력으로 움직이기
 
   window.addEventListener("keyup", e => {
     if (this.state.searchResult.length === 0) return;

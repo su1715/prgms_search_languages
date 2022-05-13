@@ -63,6 +63,18 @@ export default function App($app) {
         ...this.state,
         candidateIndex: newIndex
       });
+    },
+    onItemMatch: item => {
+      const { inputValue } = this.state;
+      const startIndex = item.toLowerCase().indexOf(inputValue.toLowerCase());
+      const endIndex = startIndex + inputValue.length;
+      return (
+        item.substring(0, startIndex) +
+        `<span class="Suggestion__item--matched">` +
+        item.substring(startIndex, endIndex) +
+        `</span>` +
+        item.substring(endIndex)
+      );
     }
   });
 
