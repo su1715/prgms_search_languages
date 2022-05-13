@@ -29,9 +29,19 @@ export default function SearchInput({
   });
 
   this.$target.addEventListener("keyup", e => {
-    e.preventDefault();
-    const arrows = new Set(["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"]);
-    if (arrows.has(e.key)) return;
-    onChange(e.target.value);
+    const ignoreKeys = new Set([
+      "ArrowRight",
+      "ArrowLeft",
+      "ArrowUp",
+      "ArrowDown",
+      "Enter"
+    ]);
+    if (ignoreKeys.has(e.key)) return;
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+      onChange(e.target.value);
+    }, 200);
   });
 }

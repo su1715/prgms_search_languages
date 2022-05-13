@@ -46,7 +46,7 @@ export default function Suggestion({
     if (!li) return;
 
     const { id } = li.dataset;
-    onClick(id);
+    onClick(parseInt(id));
   });
 
   this.render();
