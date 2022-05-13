@@ -28,9 +28,17 @@ export default function App($app) {
       this.setState({ ...this.state, inputValue: value, searchResult: result });
     },
     onEnterKey: () => {
-      const { searchResult, candidateIndex } = this.state;
-      console.log(searchResult, candidateIndex);
-      alert(searchResult[candidateIndex]);
+      const { searchResult, candidateIndex, selectedLanguages } = this.state;
+      const newLanguage = searchResult[candidateIndex];
+
+      alert(newLanguage);
+      const filteredLanguages = selectedLanguages.filter(
+        lang => lang !== newLanguage
+      );
+      const addedLanguages = [...filteredLanguages, newLanguage];
+      const newSelectedLanguages = addedLanguages.slice(-5);
+
+      this.setState({ ...this.state, selectedLanguages: newSelectedLanguages });
     }
   });
 

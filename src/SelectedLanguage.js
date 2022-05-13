@@ -12,7 +12,7 @@ export default function SelectedLanguage({ $app, initialState }) {
   this.render = () => {
     this.$target.innerHTML =
       this.state.length > 0
-        ? `<ul>${this.state.map(item => `<li>${item}</li>`)}</ul>`
+        ? `<ul>${this.state.map(item => `<li>${item}</li>`).join("")}</ul>`
         : "";
   };
 
