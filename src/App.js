@@ -2,6 +2,9 @@ import SearchInput from "./SearchInput.js";
 import Suggestion from "./Suggestion.js";
 import request from "../util/api.js";
 import SelectedLanguage from "./SelectedLanguage.js";
+import { getItem, setItem } from "../util/localStorage.js";
+
+const cache = { "": [] };
 
 export default function App($app) {
   this.state = {
@@ -20,15 +23,20 @@ export default function App($app) {
     $app,
     initialState: this.state.inputValue,
     onChange: async value => {
-      let result = [];
-      if (value !== "") {
-        result = await request(`/languages?keyword=${value}`);
-        console.log(result);
+      if (cache[value] === undefined) {
+        const result = await request(`/languages?keyword=${value}`);
+        cache[value] = result;
       }
-      this.setState({ ...this.state, inputValue: value, searchResult: result });
+      const newSearchResult = cache[value];
+      this.setState({
+        ...this.state,
+        inputValue: value,
+        searchResult: newSearchResult
+      });
     },
     onEnterKey: () => {
       const { searchResult, candidateIndex, selectedLanguages } = this.state;
+      if (searchResult.length === 0) return;
       const newLanguage = searchResult[candidateIndex];
 
       alert(newLanguage);
@@ -86,7 +94,13 @@ export default function App($app) {
       candidateIndex: this.state.candidateIndex
     });
     selectedLanguage.setState(this.state.selectedLanguages);
+    setItem("APP_STATE", this.state);
   };
 
-  this.init = () => {};
+  this.init = () => {
+    const initialState = getItem("APP_STATE", this.state);
+    this.setState(initialState);
+  };
+
+  this.init();
 }
